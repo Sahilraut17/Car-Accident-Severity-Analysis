@@ -26,7 +26,7 @@ Top_states_accident=Top_states.reset_index(name='Accident_count')
 
 
 Top_states_without_weather=data_merged.groupby('State')["ID"].count()
-Top_states_without_weather_2=Top_states.reset_index(name='Accident_count')
+Top_states_without_weather_2=Top_states_without_weather.reset_index(name='Accident_count')
 #Taking the top 10
 Top_10_states_accident=Top_states_accident.nlargest(10,'Accident_count')
 Top_10_states_accident_without_weather=Top_states_without_weather_2.nlargest(10,'Accident_count')
