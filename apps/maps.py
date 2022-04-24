@@ -118,26 +118,50 @@ layout = html.Div([
                                      className="text-center text-light bg-dark"), body=True, color="cadetblue")
                     , className="mb-3")
         ]),
-        dcc.Dropdown(
-        id='Month_Dropdown',
-        options=[
-            {'label': 'All months', 'value': 'All'},
-            {'label': 'January', 'value': '1'},
-            {'label': 'February', 'value': '2'},
-            {'label': 'March', 'value': '3'},
-            {'label': 'April', 'value': '4'},
-            {'label': 'May', 'value': '5'},
-            {'label': 'June', 'value': '6'},
-            {'label': 'July', 'value': '7'},
-            {'label': 'August', 'value': '8'},
-            {'label': 'September', 'value': '9'},
-            {'label': 'October', 'value': '10'},
-            {'label': 'November', 'value': '11'},
-            {'label': 'December', 'value': '12'}
+
+
+        dbc.Row([
+            dbc.Col(dcc.Dropdown(
+            id='Month_Dropdown',
+            options=[
+                {'label': 'All months', 'value': 'All'},
+                {'label': 'January', 'value': '1'},
+                {'label': 'February', 'value': '2'},
+                {'label': 'March', 'value': '3'},
+                {'label': 'April', 'value': '4'},
+                {'label': 'May', 'value': '5'},
+                {'label': 'June', 'value': '6'},
+                {'label': 'July', 'value': '7'},
+                {'label': 'August', 'value': '8'},
+                {'label': 'September', 'value': '9'},
+                {'label': 'October', 'value': '10'},
+                {'label': 'November', 'value': '11'},
+                {'label': 'December', 'value': '12'}
+            ],
+            value='All',
+            style={'width': '100%', 'margin-left':'5px'}
+            ),),
+
+ 
+            dbc.Col(dcc.Dropdown(
+            id='Weather_Dropdown',
+            options=[
+                {'label': 'All Weather', 'value': 'All_Weather'},
+                {'label': 'Light Rain', 'value': 'Light Rain'},
+                {'label': 'Mostly Cloudy', 'value': 'Mostly Cloudy'},
+                {'label': 'Partly Cloudy', 'value': 'Partly Cloudy'},
+                {'label': 'Fair', 'value': 'Fair'}
+            ],
+            value='All_Weather',
+            style={'width': '100%', 'margin-left':'5px'}
+            ),
+            ),
+
+
         ],
-        value='All',
-        style={'width': '65%', 'margin-left':'5px'}
+   
         ),
+    
         #TimeZone Analysis
         dbc.Row([
             dbc.Col(dbc.Card(html.H3(children='TimeZone Accident trend Analysis in USA',
@@ -248,15 +272,21 @@ layout = html.Div([
 # For Timezone 1
 @app.callback(
     Output('Timezone_accidents', 'figure'),
-    Input('Month_Dropdown', 'value')
+    Input('Month_Dropdown', 'value'),
+    Input('Weather_Dropdown', 'value')
 )
 
 
-def update_output(value):
-    if value == "All":
+def update_output(value,value2):
+    if value == "All" and value2 =="All_Weather":
         data_merged_timezone = data_merged
-    else:
+    elif value == "All":
+        data_merged_timezone = data_merged[data_merged['Weather_Condition'] == value2]        
+    elif value2 == "All_Weather":
         data_merged_timezone = data_merged[data_merged['Month'] == value]
+    else:
+        data_merged_timezone_2 = data_merged[data_merged['Weather_Condition'] == value2]
+        data_merged_timezone = data_merged_timezone_2[data_merged_timezone_2['Month'] == value]
     #Grouping the States with respect to the count of accidents
     Timezone_states=data_merged_timezone.groupby(['Timezone', 'State'])["ID"].count()
     Timezone_states=Timezone_states.reset_index(name='Accident_count')
@@ -266,15 +296,21 @@ def update_output(value):
 # For Statewise Country Chart 2
 @app.callback(
     Output('State_wise_accidents', 'figure'),
-    Input('Month_Dropdown', 'value')
+    Input('Month_Dropdown', 'value'),
+    Input('Weather_Dropdown', 'value')
 )
 
 
-def update_output(value):
-    if value == "All":
+def update_output(value,value2):
+    if value == "All" and value2 =="All_Weather":
         data_merged_Map = data_merged
-    else:
+    elif value == "All":
+        data_merged_Map = data_merged[data_merged['Weather_Condition'] == value2]        
+    elif value2 == "All_Weather":
         data_merged_Map = data_merged[data_merged['Month'] == value]
+    else:
+        data_merged_Map_2 = data_merged[data_merged['Weather_Condition'] == value2]
+        data_merged_Map = data_merged_Map_2[data_merged_Map_2['Month'] == value]
     
     Top_states_Accident_count=data_merged_Map.groupby('State')["ID"].count()
     Top_states_Accident_count=Top_states_Accident_count.reset_index(name='Accident_count')
@@ -286,15 +322,21 @@ def update_output(value):
 # For Top 10 Statewise Country Chart 3
 @app.callback(
     Output('Top_10_State_wise_accidents', 'figure'),
-    Input('Month_Dropdown', 'value')
+    Input('Month_Dropdown', 'value'),
+    Input('Weather_Dropdown', 'value')
 )
 
 
-def update_output(value):
-    if value == "All":
+def update_output(value,value2):
+    if value == "All" and value2 =="All_Weather":
         data_merged_Map_10 = data_merged
-    else:
+    elif value == "All":
+        data_merged_Map_10 = data_merged[data_merged['Weather_Condition'] == value2]        
+    elif value2 == "All_Weather":
         data_merged_Map_10 = data_merged[data_merged['Month'] == value]
+    else:
+        data_merged_Map_10_2 = data_merged[data_merged['Weather_Condition'] == value2]
+        data_merged_Map_10= data_merged_Map_10_2[data_merged_Map_10_2['Month'] == value]
     #Grouping the States with respect to the count of accidents
     Top_states_Accident_count=data_merged_Map_10.groupby('State')["ID"].count()
     Top_states_Accident_count=Top_states_Accident_count.reset_index(name='Accident_count')
@@ -307,15 +349,21 @@ def update_output(value):
 # For City Heatmap Chart 4
 @app.callback(
     Output('City_wise_accidents', 'figure'),
-    Input('Month_Dropdown', 'value')
+    Input('Month_Dropdown', 'value'),
+    Input('Weather_Dropdown', 'value')
 )
 
 
-def update_output(value):
-    if value == "All":
+def update_output(value,value2):
+    if value == "All" and value2 =="All_Weather":
         data_merged_cities = data_merged
-    else:
+    elif value == "All":
+        data_merged_cities = data_merged[data_merged['Weather_Condition'] == value2]        
+    elif value2 == "All_Weather":
         data_merged_cities = data_merged[data_merged['Month'] == value]
+    else:
+        data_merged_cities_2 = data_merged[data_merged['Weather_Condition'] == value2]
+        data_merged_cities = data_merged_cities_2[data_merged_cities_2['Month'] == value]
     #Grouping the States with respect to the count of accidents
     city_df = pd.DataFrame(data_merged_cities['City'].value_counts()).reset_index().rename(columns={'index':'City', 'City':'Cases'})
     top_100_cities = pd.DataFrame(city_df.head(100))
@@ -329,15 +377,21 @@ def update_output(value):
 # For Top 10 City Donut Chart 5
 @app.callback(
     Output('Top_10_City_wise_accidents', 'figure'),
-    Input('Month_Dropdown', 'value')
+    Input('Month_Dropdown', 'value'),
+    Input('Weather_Dropdown', 'value')
 )
 
 
-def update_output(value):
-    if value == "All":
+def update_output(value,value2):
+    if value == "All" and value2 =="All_Weather":
         data_merged_cities_10 = data_merged
-    else:
+    elif value == "All":
+        data_merged_cities_10 = data_merged[data_merged['Weather_Condition'] == value2]        
+    elif value2 == "All_Weather":
         data_merged_cities_10 = data_merged[data_merged['Month'] == value]
+    else:
+        data_merged_cities_10_2 = data_merged[data_merged['Weather_Condition'] == value2]
+        data_merged_cities_10 = data_merged_cities_10_2[data_merged_cities_10_2['Month'] == value]
     #Grouping the States with respect to the count of accidents
     city_df_2 = pd.DataFrame(data_merged_cities_10['City'].value_counts()).reset_index().rename(columns={'index':'City', 'City':'Cases'})
     top_10_cities = pd.DataFrame(city_df_2.head(10))
@@ -349,15 +403,21 @@ def update_output(value):
 # For Street Heatmap Chart 6
 @app.callback(
     Output('Street_wise_accidents', 'figure'),
-    Input('Month_Dropdown', 'value')
+    Input('Month_Dropdown', 'value'),
+    Input('Weather_Dropdown', 'value')
 )
 
 
-def update_output(value):
-    if value == "All":
+def update_output(value,value2):
+    if value == "All" and value2 =="All_Weather":
         data_merged_Street = data_merged
-    else:
+    elif value == "All":
+        data_merged_Street = data_merged[data_merged['Weather_Condition'] == value2]        
+    elif value2 == "All_Weather":
         data_merged_Street = data_merged[data_merged['Month'] == value]
+    else:
+        data_merged_Street_2 = data_merged[data_merged['Weather_Condition'] == value2]
+        data_merged_Street = data_merged_Street_2[data_merged_Street_2['Month'] == value]
     #Grouping the States with respect to the count of accidents
     Street_df = pd.DataFrame(data_merged_Street['Street'].value_counts()).reset_index().rename(columns={'index':'Street', 'Street':'Cases'})
     top_100_Streets = pd.DataFrame(Street_df.head(100))
@@ -370,15 +430,21 @@ def update_output(value):
 # For Top 15 Street Barchart Chart 7
 @app.callback(
     Output('Top_15_Street_wise_accidents', 'figure'),
-    Input('Month_Dropdown', 'value')
+    Input('Month_Dropdown', 'value'),
+    Input('Weather_Dropdown', 'value')
 )
 
 
-def update_output(value):
-    if value == "All":
+def update_output(value,value2):
+    if value == "All" and value2 =="All_Weather":
         data_merged_Street_15 = data_merged
-    else:
+    elif value == "All":
+        data_merged_Street_15 = data_merged[data_merged['Weather_Condition'] == value2]        
+    elif value2 == "All_Weather":
         data_merged_Street_15 = data_merged[data_merged['Month'] == value]
+    else:
+        data_merged_Street_15_2 = data_merged[data_merged['Weather_Condition'] == value2]
+        data_merged_Street_15 = data_merged_Street_15_2[data_merged_Street_15_2['Month'] == value]
     #Grouping the States with respect to the count of accidents
     Street_df_2 = pd.DataFrame(data_merged_Street_15['Street'].value_counts()).reset_index().rename(columns={'index':'Street', 'Street':'Cases'})
     top_15_Streets = pd.DataFrame(Street_df_2.head(15))
