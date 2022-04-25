@@ -150,7 +150,13 @@ layout = html.Div([
                 {'label': 'Light Rain', 'value': 'Light Rain'},
                 {'label': 'Mostly Cloudy', 'value': 'Mostly Cloudy'},
                 {'label': 'Partly Cloudy', 'value': 'Partly Cloudy'},
-                {'label': 'Fair', 'value': 'Fair'}
+                {'label': 'Fair', 'value': 'Fair'},
+                {'label': 'Cloudy', 'value': 'Cloudy'},
+                {'label': 'Fog', 'value': 'Fog'},
+                {'label': 'Light Snow', 'value': 'Light Snow'},
+                {'label': 'Haze', 'value': 'Haze'},
+                {'label': 'Rain', 'value': 'Rain'},
+                {'label': 'Windy', 'value': 'Fair / Windy'}
             ],
             value='All_Weather',
             style={'width': '100%', 'margin-left':'5px'}
@@ -262,6 +268,47 @@ layout = html.Div([
         ],
         align="center",
         ),  
+
+        #Severity Analysis
+        dbc.Row([
+            dbc.Col(dbc.Card(html.H3(children='Severity analysis of Accidents in USA',
+                                     className="text-center text-light bg-dark"), body=True, color="dark")
+            , className="mt-4 mb-4"),
+            
+        ]),
+
+        dbc.Row([
+            dbc.Col(dcc.Graph(id='Severity_accidents', figure ={})),
+            dbc.Col(dbc.Card(html.H4(children='The Plot gives insights of the severity of accidents that takes plpace in USA. A large amount of accident populations is of Moderate Severity for the year 2021',
+                                     className="text-center text-light bg-dark"), body=True, color="grey")
+            , className="mt-4 mb-4"),
+            
+            
+        ],
+        align="center",
+        ),  
+
+        #Weather Analysis
+        dbc.Row([
+            dbc.Col(dbc.Card(html.H3(children='Weather analysis of Accidents in USA',
+                                     className="text-center text-light bg-dark"), body=True, color="dark")
+            , className="mt-4 mb-4"),
+            
+        ]),
+
+        dbc.Row([
+            
+            dbc.Col(dbc.Card(html.H4(children='The Plot gives insights of the top 10 weather contributing to accidents that takes place in USA.',
+                                     className="text-center text-light bg-dark"), body=True, color="grey")
+            , className="mt-4 mb-4"),
+            dbc.Col(dcc.Graph(id='Weather_accidents', figure ={})),
+            
+            
+        ],
+        align="center",
+        ), 
+
+        
     ])
 
 ])
@@ -452,4 +499,57 @@ def update_output(value,value2):
     Bar_street_accident_fig = px.bar(top_15_Streets, x='Street', y='Cases',hover_data=['Street', 'Cases'], color='Cases', color_continuous_scale='YlOrBr')
     
     return Bar_street_accident_fig 
+
+# Severity Chart 8
+@app.callback(
+    Output('Severity_accidents', 'figure'),
+    Input('Month_Dropdown', 'value'),
+    Input('Weather_Dropdown', 'value')
+)
+
+
+def update_output(value,value2):
+    if value == "All" and value2 =="All_Weather":
+        data_merged_Severity = data_merged
+    elif value == "All":
+        data_merged_Severity = data_merged[data_merged['Weather_Condition'] == value2]        
+    elif value2 == "All_Weather":
+        data_merged_Severity = data_merged[data_merged['Month'] == value]
+    else:
+        data_merged_Severity_2 = data_merged[data_merged['Weather_Condition'] == value2]
+        data_merged_Severity = data_merged_Severity_2[data_merged_Severity_2['Month'] == value]
+    #Grouping the States with respect to the count of accidents
+    Severity_df=  pd.DataFrame(data_merged_Severity['Severity'].value_counts()).reset_index().rename(columns={'index':'Severity', 'Severity':'Cases'})
+    
+
+    Severity_accident_fig = fig = px.funnel(Severity_df, y='Cases', x='Severity', color_discrete_sequence=px.colors.sequential.RdBu[::-1], orientation ='h')
+    
+    return Severity_accident_fig
+
+
+# Weather Chart 8
+@app.callback(
+    Output('Weather_accidents', 'figure'),
+    Input('Month_Dropdown', 'value'),
+    Input('Weather_Dropdown', 'value')
+)
+
+
+def update_output(value,value2):
+    if value == "All" and value2 =="All_Weather":
+        data_merged_Weather = data_merged
+    elif value == "All":
+        data_merged_Weather = data_merged[data_merged['Weather_Condition'] == value2]        
+    elif value2 == "All_Weather":
+        data_merged_Weather = data_merged[data_merged['Month'] == value]
+    else:
+        data_merged_Weather_2 = data_merged[data_merged['Weather_Condition'] == value2]
+        data_merged_Weather = data_merged_Weather_2[data_merged_Weather_2['Month'] == value]
+
+
+    weather_condition_df = pd.DataFrame(data_merged_Weather.Weather_Condition.value_counts().head(10)).reset_index().rename(columns={'index':'Weather_Condition', 'Weather_Condition':'Cases'})
+    Bar_weather_fig = px.bar(weather_condition_df, x='Weather_Condition', y='Cases',hover_data=['Weather_Condition', 'Cases'], color='Weather_Condition')
+  
+    
+    return Bar_weather_fig
 #app.run_server(debug=True)
