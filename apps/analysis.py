@@ -2,85 +2,212 @@ import pandas as pd
 import numpy as np
 import dash_bootstrap_components as dbc
 import plotly.express as px
+import plotly.graph_objects as go
 from dash import html
 from dash import dcc
+from app import app
+from dash.dependencies import Input, Output
 
 
-data = pd.read_csv(r'US_Accidents_Dec20_new.csv', nrows=10000)
-data1=data[['ID','Temperature(F)','Wind_Chill(F)','Humidity(%)','Visibility(mi)','Wind_Direction','Wind_Speed(mph)','Precipitation(in)','Civil_Twilight','Nautical_Twilight','Astronomical_Twilight','Weather_Condition']]
-data2=data[['City','County','State','Timezone','Start_Lat','Start_Lng','End_Lat','End_Lng']]
-data_merged = pd.concat([data1, data2], axis=1)
+
+data = pd.read_csv(r'US_Accidents_2021_new.csv', nrows=10000)
 
 
-data1.fillna(data1.median(), inplace=True)
-data2.fillna(data1.median(), inplace=True)
-data_merged.fillna(data1.median(), inplace=True)
+def generate_intervals_labels(attribute, split, gap):
+    var_min = min(data[attribute])
+    bins = [int(var_min)]
+    labels = []
 
-fig33 = px.bar(data_merged, x='Humidity(%)', y='Visibility(mi)', color='Precipitation(in)',  
-   barmode='group')
+    for i in range(1, split+1):
+        lower_limit = int(var_min+((i-1)*gap))
+        if i==split:
+            upper_limit = int(max(data[attribute]))
+        else:
+            upper_limit = int(var_min + (i*gap))
+        # bins
+        bins.append(upper_limit)
+        # labels
+        label_var = '({} to {})'.format(lower_limit, upper_limit)
+        labels.append(label_var)    
+    
+    return bins, labels
+
+
+# def createPlots(attribute, bins, labels):
+#     data["binned"] = pd.cut(data[attribute], bins, labels=labels)
+#     df_temp = data.groupby("binned").count().reset_index()
+#     df_temp = df_temp.rename(columns={"ID":"Accident Cases", "binned":attribute})
+
+    # bar_temp = px.bar(df_temp, x=attribute, y='Accident Cases')
+    # pie_temp = px.pie(df_temp, values='Accident Cases', names=attribute, color_discrete_sequence=px.colors.sequential.RdBu[::-1],hole=0.5)
+
+    # return iplot(bar_temp), iplot(pie_temp)
+
+
+##### Temperature ######
+bins_temp, labels_temp = generate_intervals_labels('Temperature(F)', 5, 30)
+data["temp_binned"] = pd.cut(data["Temperature(F)"], bins_temp, labels=labels_temp)
+df_temp = data.groupby("temp_binned").count().reset_index()
+df_temp = df_temp.rename(columns={"ID":"Accident Cases", "temp_binned":"Temperature (F)"})
+bar_temp = px.bar(df_temp, x='Temperature (F)', y='Accident Cases')
+pie_temp = px.pie(df_temp, values='Accident Cases', names='Temperature (F)', color_discrete_sequence=px.colors.sequential.RdBu[::-1],hole=0.5)
+
+##### Humidity ######
+bins_humi, labels_humi = generate_intervals_labels('Humidity(%)', 10, 10)
+data["humi_binned"] = pd.cut(data["Humidity(%)"], bins_humi, labels=labels_humi)
+df_humi = data.groupby("humi_binned").count().reset_index()
+df_humi = df_humi.rename(columns={"ID":"Accident Cases", "humi_binned":"Humidity (%)"})
+bar_humi = px.bar(df_humi, x='Humidity (%)', y='Accident Cases')
+pie_humi = px.pie(df_humi, values='Accident Cases', names='Humidity (%)', color_discrete_sequence=px.colors.sequential.RdBu[::-1],hole=0.5)
+
+##### Pressure ######
+bins_press, labels_press = generate_intervals_labels('Pressure(in)', 5, 2)
+data["press_binned"] = pd.cut(data["Pressure(in)"], bins_press, labels=labels_press)
+df_press = data.groupby("press_binned").count().reset_index()
+df_press = df_press.rename(columns={"ID":"Accident Cases", "press_binned":"Pressure (in)"})
+bar_press = px.bar(df_press, x='Pressure (in)', y='Accident Cases')
+pie_press = px.pie(df_press, values='Accident Cases', names='Pressure (in)', color_discrete_sequence=px.colors.sequential.RdBu[::-1],hole=0.5)
+
+##### Wind Chill ######
+bins_wc, labels_wc = generate_intervals_labels('Wind_Chill(F)', 8, 20)
+data["wc_binned"] = pd.cut(data["Wind_Chill(F)"], bins_wc, labels=labels_wc)
+df_wc = data.groupby("wc_binned").count().reset_index()
+df_wc = df_wc.rename(columns={"ID":"Accident Cases", "wc_binned":"Wind Chill (F)"})
+bar_wc = px.bar(df_wc, x='Wind Chill (F)', y='Accident Cases')
+pie_wc = px.pie(df_wc, values='Accident Cases', names='Wind Chill (F)', color_discrete_sequence=px.colors.sequential.RdBu[::-1],hole=0.5)
+
+##### Wind Speed ######
+bins_ws, labels_ws = generate_intervals_labels('Wind_Speed(mph)', 9, 5)
+data["ws_binned"] = pd.cut(data["Temperature(F)"], bins_ws, labels=labels_ws)
+df_ws = data.groupby("ws_binned").count().reset_index()
+df_ws = df_ws.rename(columns={"ID":"Accident Cases", "ws_binned":"Wind Speed (mph)"})
+bar_ws = px.bar(df_ws, x='Wind Speed (mph)', y='Accident Cases')
+pie_ws = px.pie(df_ws, values='Accident Cases', names='Wind Speed (mph)', color_discrete_sequence=px.colors.sequential.RdBu[::-1],hole=0.5)
+
+##### Visibility ######
+bins_vis, labels_vis = generate_intervals_labels('Visibility(mi)', 10, 5)
+data["vis_binned"] = pd.cut(data["Temperature(F)"], bins_vis, labels=labels_vis)
+df_vis = data.groupby("vis_binned").count().reset_index()
+df_vis = df_vis.rename(columns={"ID":"Accident Cases", "vis_binned":"Visibility (mi)"})
+bar_vis = px.bar(df_vis, x='Visibility (mi)', y='Accident Cases')
+pie_vis = px.pie(df_vis, values='Accident Cases', names='Visibility (mi)', color_discrete_sequence=px.colors.sequential.RdBu[::-1],hole=0.5)
+
+##### Weather Conditions ########
+weather_condition_df = pd.DataFrame(data.Weather_Condition.value_counts().head(10)).reset_index().rename(columns={'index':'Weather Condition', 'Weather_Condition':'Cases'})
+weather_condition = px.bar(weather_condition_df, x='Cases', y='Weather Condition', orientation='h', color='Cases', color_continuous_scale='RdBu')
+weather_condition.update_layout(yaxis={'categoryorder':'total ascending'})
+
 
 
 layout = html.Div([
     dbc.Container([
         dbc.Row([
-            dbc.Col(html.H1(children='Weather Conditions'), className="mb-2")
+            dbc.Col(html.H1(children='Weather Analysis'), className="mb-2")
         ]),
         dbc.Row([
-            dbc.Col(html.H6(children='Visualising trends across different weather conditions impacting accidents'), className="mb-4")
+            dbc.Col(html.H5(children='Visualising trends across different weather conditions that impact the number of accident cases across the country'), className="mb-4")
         ]),
         dbc.Row([
-            dbc.Col(dbc.Card(html.H3(children='Humidity vs Visibility',
+            dbc.Col(dbc.Card(html.H3(children='Weather Conditions',
                                      className="text-center text-light bg-dark"), body=True, color="dark")
             , className="mt-4 mb-4")
         ]),
-        dcc.Graph(figure=fig33),
+        dcc.Graph(figure=weather_condition),
+        # dbc.Row([
+        #     dbc.Col(dbc.Card(html.H3(children='Humidity vs Visibility',
+        #                              className="text-center text-light bg-dark"), body=True, color="dark")
+        #     , className="mt-4 mb-4")
+        # ]),
+        # dcc.Graph(figure=fig33),
         dbc.Row([
-            dbc.Col(dbc.Card(html.H3(children='Humidity vs Temperature',
+            dbc.Col(dbc.Card(html.H3(children='Temperature',
                                      className="text-center text-light bg-dark"), body=True, color="dark")
             , className="mt-4 mb-4")
         ]),
-        dcc.Graph(
-            figure={
-                "data": [
-                    {
-                        "x": data["Humidity(%)"],
-                        "y": data["Temperature(F)"],
-                        "type": "scatter",
-                        'mode':'markers',
-                        'color':data['City']
-                    },
-                ],
-                "layout": {
-                    "xaxis": {"title":"Humidity (%)"},
-                    "yaxis": {"title":"Temperature (F)"}
-                },
-            },
+        dbc.Row([
+            dbc.Col(html.H5(children='• 61% of road accidents occured in the temperature range of 61°F to 91°F'), className="mb-4")
+        ]),
+        dbc.Row([
+            # dbc.Col(dbc.Card(html.H5(children="61% of road accidents occured in the temperature range of 61°F to 91°F",
+            #                          className="text-center text-dark bg-light"), body=False)
+            # , className="mb-2"),
+            dbc.Col(dcc.Graph(figure=bar_temp), width=8),
+            dbc.Col(dcc.Graph(figure=pie_temp), width=4)
+        ],
+        align="center",
         ),
         dbc.Row([
-            dbc.Col(dbc.Card(html.H3(children='Windchill vs Temperature',
+            dbc.Col(dbc.Card(html.H3(children='Humidity',
                                      className="text-center text-light bg-dark"), body=True, color="dark")
             , className="mt-4 mb-4")
         ]),
-        dcc.Graph(
-            figure={
-                "data": [
-                    {
-                        "x": data["Wind_Chill(F)"],
-                        "y": data["Temperature(F)"],
-                        "type": "scatter",
-                        'mode':'markers',
-                        'color':data['City']
-                    },
-                ],
-                "layout": {
-                    "xaxis": {"title":"Windchill (F)"},
-                    "yaxis": {"title":"Temperature (F)"}
-                },
-            },
+        dbc.Row([
+            dbc.Col(html.H5(children='• Majority of road accidents occur when the humidity is between 85% and 95%'), className="mb-4")
+        ]),
+        dbc.Row([
+            dbc.Col(dcc.Graph(figure=bar_humi), width=8),
+            dbc.Col(dcc.Graph(figure=pie_humi), width=4)
+        ],
+        align="center",
+        ),
+        dbc.Row([
+            dbc.Col(dbc.Card(html.H3(children='Pressure',
+                                     className="text-center text-light bg-dark"), body=True, color="dark")
+            , className="mt-4 mb-4")
+        ]),
+        dbc.Row([
+            dbc.Col(html.H5(children='• In almost 94% of road accident cases, the pressure range is between 27 and 30 inch of mercury (inHg) '), className="mb-4")
+        ]),
+        dbc.Row([
+            dbc.Col(dcc.Graph(figure=bar_press), width=8),
+            dbc.Col(dcc.Graph(figure=pie_press), width=4)
+        ],
+        align="center",
+        ),
+        dbc.Row([
+            dbc.Col(dbc.Card(html.H3(children='Wind Chill',
+                                     className="text-center text-light bg-dark"), body=True, color="dark")
+            , className="mt-4 mb-4")
+        ]),
+        dbc.Row([
+            dbc.Col(html.H5(children='• In most of the cases, the wind chill temperature was '), className="mb-4")
+        ]),
+        dbc.Row([
+            dbc.Col(dcc.Graph(figure=bar_wc), width=8),
+            dbc.Col(dcc.Graph(figure=pie_wc), width=4)
+        ],
+        align="center",
+        ),
+        dbc.Row([
+            dbc.Col(dbc.Card(html.H3(children='Wind Speed',
+                                     className="text-center text-light bg-dark"), body=True, color="dark")
+            , className="mt-4 mb-4")
+        ]),
+        dbc.Row([
+            dbc.Col(html.H5(children='• A positive correlation can be seen between the wind speed and road accident cases with a majority of cases occuring when the wind speed is between 40 and 45 mph'), className="mb-4")
+        ]),
+        dbc.Row([
+            dbc.Col(dcc.Graph(figure=bar_ws), width=8),
+            dbc.Col(dcc.Graph(figure=pie_ws), width=4)
+        ],
+        align="center",
+        ),
+        dbc.Row([
+            dbc.Col(dbc.Card(html.H3(children='Visibility',
+                                     className="text-center text-light bg-dark"), body=True, color="dark")
+            , className="mt-4 mb-4")
+        ]),
+        dbc.Row([
+            dbc.Col(html.H5(children='• Majority of road accidents occur when the humidity is between 81% and 90%'), className="mb-4")
+        ]),
+        dbc.Row([
+            dbc.Col(dcc.Graph(figure=bar_vis), width=8),
+            dbc.Col(dcc.Graph(figure=pie_vis), width=4)
+        ],
+        align="center",
         )
-        
     ])
         
 ])
-    
+
 # app.run_server(debug=True)
