@@ -37,7 +37,7 @@ layout = html.Div([
 
             dbc.Col(dbc.Card(children=[html.H3(children='Access the code used to build this dashboard',
                                                className="text-center"),
-                                       dbc.Row([dbc.Col(dbc.Button("GitHub", href="",
+                                       dbc.Row([dbc.Col(dbc.Button("GitHub", href="https://github.com/Sahilraut17/Car-Accident-Severity-Analysis",
                                                                    color="primary"),
                                                         className="d-grid gap-2"),
                                                 ], justify="center")
