@@ -515,7 +515,7 @@ def update_output(value,value2):
     Severity_df=  pd.DataFrame(data_merged_Severity['Severity'].value_counts()).reset_index().rename(columns={'index':'Severity', 'Severity':'Cases'})
     
 
-    Severity_accident_fig = fig = px.funnel(Severity_df, y='Cases', x='Severity', color_discrete_sequence=px.colors.sequential.RdBu[::-1], orientation ='h')
+    Severity_accident_fig = fig = px.funnel(Severity_df, y='Severity', x='Cases', color_discrete_sequence=px.colors.sequential.RdBu[::-1], orientation ='h')
     
     return Severity_accident_fig
 
