@@ -11,23 +11,13 @@ from apps import trends, maps, analysis, home
 
 # building the navigation bar
 # https://github.com/facultyai/dash-bootstrap-components/blob/master/examples/advanced-component-usage/Navbars.py
-dropdown = dbc.DropdownMenu(
-    children=[
-        dbc.DropdownMenuItem("Analysis", href="/analysis"),
-        dbc.DropdownMenuItem("Trends", href="/trends"),
-        dbc.DropdownMenuItem("Map", href="/map"),
-    ],
-    nav = True,
-    in_navbar = True,
-    label = "Explore",
-)
 
 navbar = dbc.NavbarSimple(
     children=[
         dbc.NavItem(dbc.NavLink("Home", href="/home")),
-        dbc.NavItem(dbc.NavLink("Analysis", href="/analysis")),
-        dbc.NavItem(dbc.NavLink("Trends", href="/trends")),
-        dbc.NavItem(dbc.NavLink("Map", href="/map")),
+        dbc.NavItem(dbc.NavLink("Weather", href="/analysis")),
+        dbc.NavItem(dbc.NavLink("Location", href="/map")),
+        dbc.NavItem(dbc.NavLink("Time", href="/trends")),
         dbc.DropdownMenu(
             children=[
                 dbc.DropdownMenuItem("Future Work", header=True),
@@ -38,7 +28,7 @@ navbar = dbc.NavbarSimple(
             label="More",
         ),
     ],
-    brand="Car Accident Severity Analysis Dashboard",
+    brand="Car Accident Severity Analysis",
     brand_href="/home",
     color="dark",
     dark=True,
