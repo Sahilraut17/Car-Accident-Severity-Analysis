@@ -98,25 +98,18 @@ data_merged['Year'] = data_merged['Start_Time'].dt.year
 
 layout = html.Div([
     dbc.Container([
-
-        
-        # Dropdown 
-
+        dbc.Row([
+            dbc.Col(html.H1(children='Location Analysis'), className="mb-2")
+        ]),
         
         # Data Overview
         dbc.Row([
-            dbc.Col(dbc.Card(html.H3(children='Data Overview',
-                                     className="text-center text-light bg-dark"), body=True, color="dark")
-                    , className="mb-4")
-        ]),
-        dbc.Row([
-            dbc.Col(html.H4(children='In this dataset, we have different attributes like City, State, Timezone and even street for each accident records. Here we will analyze these four features based on the no. of cases for each distinct location.'), className="mb-4")
+            dbc.Col(html.H5(children='The dataset contains different attributes like City, State, Timezone and even street for each accident. Here we will analyze these four features based on the number of cases for each distinct location.'), className="mb-4")
         ]),
 
         dbc.Row([
-            dbc.Col(dbc.Card(html.H3(children='Filters',
-                                     className="text-center text-light bg-dark"), body=True, color="cadetblue")
-                    , className="mb-3")
+            dbc.Col(html.H4(children='Global Filters:',
+                                     className="text-left text-dark"), className="mb-2")
         ]),
 
 
@@ -548,7 +541,7 @@ def update_output(value,value2):
 
 
     weather_condition_df = pd.DataFrame(data_merged_Weather.Weather_Condition.value_counts().head(10)).reset_index().rename(columns={'index':'Weather_Condition', 'Weather_Condition':'Cases'})
-    Bar_weather_fig = px.bar(weather_condition_df, x='Weather_Condition', y='Cases',hover_data=['Weather_Condition', 'Cases'], color='Weather_Condition')
+    Bar_weather_fig = px.bar(weather_condition_df, x='Weather_Condition', y='Cases',hover_data=['Weather_Condition', 'Cases'], color='Weather_Condition', color_continuous_scale='RdBu')
   
     
     return Bar_weather_fig
