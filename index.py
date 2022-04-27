@@ -25,21 +25,21 @@ dropdown = dbc.DropdownMenu(
 navbar = dbc.NavbarSimple(
     children=[
         dbc.NavItem(dbc.NavLink("Home", href="/home")),
-        dbc.NavItem(dbc.NavLink("Analysis", href="/analysis")),
-        dbc.NavItem(dbc.NavLink("Trends", href="/trends")),
-        dbc.NavItem(dbc.NavLink("Map", href="/map")),
-        dbc.DropdownMenu(
-            children=[
-                dbc.DropdownMenuItem("More pages", header=True),
-                dbc.DropdownMenuItem("Page 2", href="#"),
-                dbc.DropdownMenuItem("Page 3", href="#"),
-            ],
-            nav=True,
-            in_navbar=True,
-            label="More",
-        ),
+        dbc.NavItem(dbc.NavLink("Weather", href="/analysis")),
+        dbc.NavItem(dbc.NavLink("Location", href="/map")),
+        dbc.NavItem(dbc.NavLink("Time", href="/trends")),
+        # dbc.DropdownMenu(
+        #     children=[
+        #         dbc.DropdownMenuItem("More pages", header=True),
+        #         dbc.DropdownMenuItem("Page 2", href="#"),
+        #         dbc.DropdownMenuItem("Page 3", href="#"),
+        #     ],
+        #     nav=True,
+        #     in_navbar=True,
+        #     label="More",
+        # ),
     ],
-    brand="Car Accident Severity Analysis Dashboard",
+    brand="Car Accident Severity Analysis",
     brand_href="/home",
     color="dark",
     dark=True,
