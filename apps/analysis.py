@@ -170,7 +170,7 @@ layout = html.Div([
             , className="mt-4 mb-4")
         ]),
         dbc.Row([
-            dbc.Col(html.H5(children='• In most of the cases, the wind chill temperature was '), className="mb-4")
+            dbc.Col(html.H5(children='• In most of the cases, the wind chill temperature was between 56°F and 76°F'), className="mb-4")
         ]),
         dbc.Row([
             dbc.Col(dcc.Graph(figure=bar_wc), width=8),
@@ -198,7 +198,7 @@ layout = html.Div([
             , className="mt-4 mb-4")
         ]),
         dbc.Row([
-            dbc.Col(html.H5(children='• Majority of road accidents occur when the humidity is between 81% and 90%'), className="mb-4")
+            dbc.Col(html.H5(children='• Majority of road accidents occur when the visibility is in the range of 45 to 80 miles'), className="mb-4")
         ]),
         dbc.Row([
             dbc.Col(dcc.Graph(figure=bar_vis), width=8),
