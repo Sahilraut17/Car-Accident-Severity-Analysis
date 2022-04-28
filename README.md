@@ -1,7 +1,7 @@
 # Car-Accident-Severity-Analysis
 Reducing traffic accidents is an essential public safety challenge all over the world; therefore, accident analysis has been a subject of much research in recent decades. The objective of the project is to analyze the US accident data from 50 states to inform the US government agencies and the public on trends and possible causes of traffic accidents and what could be done to reduce them. We established a multilevel interactive map to demonstrate over a few million-accident data inside the United States for 49 states. Some of the visuals include the number of accidents by year, number of accidents by state, the best time to travel by month, day and hour, an accident-prone area in each state, factors responsible for the accidents like weather, wind flow, temperature, location, etc. The dashboard plots will be built using D3.js and Plotly, while the front-end will be developed in HTML/CSS and will be deployed through Flask.
 
-##Dataset Link 
+## Dataset Link 
 
 https://drive.google.com/file/d/1eKVS5Cgg6_uPxKtT3qFA7CIy8JrxQTir/view?usp=sharing
 
@@ -9,7 +9,7 @@ The dataset can also be downloaded from the kaggle link present in the homepage 
 
 The original dataset from kaggle is modified using the Dataset.ipynb file. 
 
-##For Running the Dashboard
+## For Running the Dashboard
 
 1: Install the requirements from requirement.txt 
 2: Download the Dataset file from the link and copy it to the main folder. 
