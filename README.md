@@ -20,3 +20,11 @@ The original dataset from kaggle is modified using the Dataset.ipynb file.
 4: run the command: python index.py
 
 5: Open this link in your browser: http://127.0.0.1:8050/
+
+
+## Demo 
+
+
+
+https://user-images.githubusercontent.com/91026979/165665855-ca788f44-4eda-4fa0-98bb-5521de234646.mp4
+
