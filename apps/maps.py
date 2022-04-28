@@ -225,7 +225,7 @@ layout = html.Div([
         ]),
         dbc.Row([
             
-            dbc.Col(dbc.Card(html.H4(children='The Plot gives insights for the Top Cities prone to accidents. Miami is the city with highest no. of road accidents 17.2% followed by L:os Angeles with 14.4% for the year.  The Top 10 cities constitute a large amount of accident cases. Government can focus more on these states to build stricter laws and take actions to prevent accidents.',
+            dbc.Col(dbc.Card(html.H4(children='The Plot gives insights for the Top Cities prone to accidents. Government can focus more on these states to build stricter laws and take actions to prevent accidents.',
                                      className="text-center text-light bg-dark"), body=True, color="grey")
             , className="mt-4 mb-4"),
             dbc.Col(dcc.Graph(id='Top_10_City_wise_accidents', figure ={})),
@@ -409,7 +409,7 @@ def update_output(value,value2):
     top_100_cities = pd.DataFrame(city_df.head(100))
     #city_df_50 = pd.DataFrame(city_df.head(50))
 
-    Treemap_city = px.treemap(top_100_cities, path=[px.Constant('USA'),'City'], values='Cases' ,color='Cases', color_continuous_scale='RdBu' ,hover_data=['City', 'Cases'])
+    Treemap_city = px.treemap(top_100_cities, path=[px.Constant('USA'),'City'], values='Cases' ,color='Cases', color_continuous_scale='YlGnBu' ,hover_data=['City', 'Cases'])
 
     
     return Treemap_city
@@ -436,7 +436,7 @@ def update_output(value,value2):
     city_df_2 = pd.DataFrame(data_merged_cities_10['City'].value_counts()).reset_index().rename(columns={'index':'City', 'City':'Cases'})
     top_10_cities = pd.DataFrame(city_df_2.head(10))
 
-    pie_fig_cities = px.pie(top_10_cities, values='Cases', names='City', color_discrete_sequence=px.colors.sequential.RdBu[::-1],hole=0.5)
+    pie_fig_cities = px.pie(top_10_cities, values='Cases', names='City', color_discrete_sequence=px.colors.sequential.YlGnBu[::-1],hole=0.5)
     
     return pie_fig_cities
 
@@ -515,7 +515,7 @@ def update_output(value,value2):
     Severity_df=  pd.DataFrame(data_merged_Severity['Severity'].value_counts()).reset_index().rename(columns={'index':'Severity', 'Severity':'Cases'})
     
 
-    Severity_accident_fig = fig = px.funnel(Severity_df, y='Severity', x='Cases', color_discrete_sequence=px.colors.sequential.RdBu[::-1], orientation ='h')
+    Severity_accident_fig = fig = px.funnel(Severity_df, y='Severity', x='Cases', color_discrete_sequence=px.colors.sequential.YlGnBu[::-1], orientation ='h')
     
     return Severity_accident_fig
 
@@ -541,7 +541,7 @@ def update_output(value,value2):
 
 
     weather_condition_df = pd.DataFrame(data_merged_Weather.Weather_Condition.value_counts().head(10)).reset_index().rename(columns={'index':'Weather_Condition', 'Weather_Condition':'Cases'})
-    Bar_weather_fig = px.bar(weather_condition_df, x='Weather_Condition', y='Cases',hover_data=['Weather_Condition', 'Cases'], color='Weather_Condition', color_continuous_scale='RdBu')
+    Bar_weather_fig = px.bar(weather_condition_df, x='Weather_Condition', y='Cases',hover_data=['Weather_Condition', 'Cases'], color='Weather_Condition', color_continuous_scale='YlGnBu')
   
     
     return Bar_weather_fig
