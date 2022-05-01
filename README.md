@@ -11,16 +11,18 @@ The original dataset from kaggle is modified using the Dataset.ipynb file.
 
 ## For Running the Dashboard
 
-1: Install the requirements from requirement.txt 
+1: Install the requirements from requirement.txt
 
-2: Download the Dataset file from the link and copy it to the main folder. 
+2: Download the Dataset file from the link and copy it to the main folder.
 
-3: Open terminal/Cmd/anaconda and cd to the code folder. 
+3: Download or clone the git repository 
+https://github.com/Sahilraut17/Car-Accident-Severity-Analysis.git
 
-4: run the command: python index.py
+4:  Open terminal/Cmd/anaconda and cd to the code folder.
 
-5: Open this link in your browser: http://127.0.0.1:8050/
+5: run the command: python index.py
 
+6: Open this link in your browser: http://127.0.0.1:8050/
 
 ## Demo 
 
