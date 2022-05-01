@@ -33,16 +33,10 @@ def generate_intervals_labels(attribute, split, gap):
     return bins, labels
 
 
-# def createPlots(attribute, bins, labels):
-#     data["binned"] = pd.cut(data[attribute], bins, labels=labels)
-#     df_temp = data.groupby("binned").count().reset_index()
-#     df_temp = df_temp.rename(columns={"ID":"Accident Cases", "binned":attribute})
-
-    # bar_temp = px.bar(df_temp, x=attribute, y='Accident Cases')
-    # pie_temp = px.pie(df_temp, values='Accident Cases', names=attribute, color_discrete_sequence=px.colors.sequential.RdBu[::-1],hole=0.5)
-
-    # return iplot(bar_temp), iplot(pie_temp)
-
+##### Weather Conditions ########
+weather_condition_df = pd.DataFrame(data.Weather_Condition.value_counts().head(10)).reset_index().rename(columns={'index':'Weather Condition', 'Weather_Condition':'Cases'})
+weather_condition = px.bar(weather_condition_df, x='Cases', y='Weather Condition', orientation='h', color='Cases', color_continuous_scale='RdBu_r')
+weather_condition.update_layout(yaxis={'categoryorder':'total ascending'})
 
 ##### Temperature ######
 bins_temp, labels_temp = generate_intervals_labels('Temperature(F)', 5, 30)
@@ -50,7 +44,7 @@ data["temp_binned"] = pd.cut(data["Temperature(F)"], bins_temp, labels=labels_te
 df_temp = data.groupby("temp_binned").count().reset_index()
 df_temp = df_temp.rename(columns={"ID":"Accident Cases", "temp_binned":"Temperature (F)"})
 bar_temp = px.bar(df_temp, x='Temperature (F)', y='Accident Cases')
-pie_temp = px.pie(df_temp, values='Accident Cases', names='Temperature (F)', color_discrete_sequence=px.colors.sequential.RdBu[::-1],hole=0.5)
+pie_temp = px.pie(df_temp, values='Accident Cases', names='Temperature (F)', color_discrete_sequence=px.colors.sequential.RdBu,hole=0.5)
 
 ##### Humidity ######
 bins_humi, labels_humi = generate_intervals_labels('Humidity(%)', 10, 10)
@@ -58,7 +52,7 @@ data["humi_binned"] = pd.cut(data["Humidity(%)"], bins_humi, labels=labels_humi)
 df_humi = data.groupby("humi_binned").count().reset_index()
 df_humi = df_humi.rename(columns={"ID":"Accident Cases", "humi_binned":"Humidity (%)"})
 bar_humi = px.bar(df_humi, x='Humidity (%)', y='Accident Cases')
-pie_humi = px.pie(df_humi, values='Accident Cases', names='Humidity (%)', color_discrete_sequence=px.colors.sequential.RdBu[::-1],hole=0.5)
+pie_humi = px.pie(df_humi, values='Accident Cases', names='Humidity (%)', color_discrete_sequence=px.colors.sequential.RdBu,hole=0.5)
 
 ##### Pressure ######
 bins_press, labels_press = generate_intervals_labels('Pressure(in)', 5, 2)
@@ -66,7 +60,7 @@ data["press_binned"] = pd.cut(data["Pressure(in)"], bins_press, labels=labels_pr
 df_press = data.groupby("press_binned").count().reset_index()
 df_press = df_press.rename(columns={"ID":"Accident Cases", "press_binned":"Pressure (in)"})
 bar_press = px.bar(df_press, x='Pressure (in)', y='Accident Cases')
-pie_press = px.pie(df_press, values='Accident Cases', names='Pressure (in)', color_discrete_sequence=px.colors.sequential.RdBu[::-1],hole=0.5)
+pie_press = px.pie(df_press, values='Accident Cases', names='Pressure (in)', color_discrete_sequence=px.colors.sequential.RdBu,hole=0.5)
 
 ##### Wind Chill ######
 bins_wc, labels_wc = generate_intervals_labels('Wind_Chill(F)', 8, 20)
@@ -74,7 +68,7 @@ data["wc_binned"] = pd.cut(data["Wind_Chill(F)"], bins_wc, labels=labels_wc)
 df_wc = data.groupby("wc_binned").count().reset_index()
 df_wc = df_wc.rename(columns={"ID":"Accident Cases", "wc_binned":"Wind Chill (F)"})
 bar_wc = px.bar(df_wc, x='Wind Chill (F)', y='Accident Cases')
-pie_wc = px.pie(df_wc, values='Accident Cases', names='Wind Chill (F)', color_discrete_sequence=px.colors.sequential.RdBu[::-1],hole=0.5)
+pie_wc = px.pie(df_wc, values='Accident Cases', names='Wind Chill (F)', color_discrete_sequence=px.colors.sequential.RdBu,hole=0.5)
 
 ##### Wind Speed ######
 bins_ws, labels_ws = generate_intervals_labels('Wind_Speed(mph)', 9, 5)
@@ -82,7 +76,7 @@ data["ws_binned"] = pd.cut(data["Temperature(F)"], bins_ws, labels=labels_ws)
 df_ws = data.groupby("ws_binned").count().reset_index()
 df_ws = df_ws.rename(columns={"ID":"Accident Cases", "ws_binned":"Wind Speed (mph)"})
 bar_ws = px.bar(df_ws, x='Wind Speed (mph)', y='Accident Cases')
-pie_ws = px.pie(df_ws, values='Accident Cases', names='Wind Speed (mph)', color_discrete_sequence=px.colors.sequential.RdBu[::-1],hole=0.5)
+pie_ws = px.pie(df_ws, values='Accident Cases', names='Wind Speed (mph)', color_discrete_sequence=px.colors.sequential.RdBu,hole=0.5)
 
 ##### Visibility ######
 bins_vis, labels_vis = generate_intervals_labels('Visibility(mi)', 10, 5)
@@ -90,12 +84,7 @@ data["vis_binned"] = pd.cut(data["Temperature(F)"], bins_vis, labels=labels_vis)
 df_vis = data.groupby("vis_binned").count().reset_index()
 df_vis = df_vis.rename(columns={"ID":"Accident Cases", "vis_binned":"Visibility (mi)"})
 bar_vis = px.bar(df_vis, x='Visibility (mi)', y='Accident Cases')
-pie_vis = px.pie(df_vis, values='Accident Cases', names='Visibility (mi)', color_discrete_sequence=px.colors.sequential.RdBu[::-1],hole=0.5)
-
-##### Weather Conditions ########
-weather_condition_df = pd.DataFrame(data.Weather_Condition.value_counts().head(10)).reset_index().rename(columns={'index':'Weather Condition', 'Weather_Condition':'Cases'})
-weather_condition = px.bar(weather_condition_df, x='Cases', y='Weather Condition', orientation='h', color='Cases', color_continuous_scale='RdBu')
-weather_condition.update_layout(yaxis={'categoryorder':'total ascending'})
+pie_vis = px.pie(df_vis, values='Accident Cases', names='Visibility (mi)', color_discrete_sequence=px.colors.sequential.RdBu,hole=0.5)
 
 
 
@@ -113,12 +102,7 @@ layout = html.Div([
             , className="mt-4 mb-4")
         ]),
         dcc.Graph(figure=weather_condition),
-        # dbc.Row([
-        #     dbc.Col(dbc.Card(html.H3(children='Humidity vs Visibility',
-        #                              className="text-center text-light bg-dark"), body=True, color="dark")
-        #     , className="mt-4 mb-4")
-        # ]),
-        # dcc.Graph(figure=fig33),
+
         dbc.Row([
             dbc.Col(dbc.Card(html.H3(children='Temperature',
                                      className="text-center text-light bg-dark"), body=True, color="dark")
@@ -128,9 +112,6 @@ layout = html.Div([
             dbc.Col(html.H5(children='• 61% of road accidents occured in the temperature range of 61°F to 91°F'), className="mb-4")
         ]),
         dbc.Row([
-            # dbc.Col(dbc.Card(html.H5(children="61% of road accidents occured in the temperature range of 61°F to 91°F",
-            #                          className="text-center text-dark bg-light"), body=False)
-            # , className="mb-2"),
             dbc.Col(dcc.Graph(figure=bar_temp), width=8),
             dbc.Col(dcc.Graph(figure=pie_temp), width=4)
         ],
