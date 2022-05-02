@@ -27,9 +27,7 @@ https://github.com/Sahilraut17/Car-Accident-Severity-Analysis.git
 ## Demo 
 
 
-
-https://user-images.githubusercontent.com/91026979/165665924-a765fa3d-f251-438e-8ad0-2b3be82e6b90.mp4
-
+https://user-images.githubusercontent.com/91026979/166182566-2a42aaec-d427-4ed3-a471-ddbac2953441.mp4
 
 
 
