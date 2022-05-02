@@ -109,7 +109,7 @@ layout = html.Div([
             , className="mt-4 mb-4")
         ]),
         dbc.Row([
-            dbc.Col(html.H5(children='• 61% of road accidents occured in the temperature range of 61°F to 91°F'), className="mb-4")
+            dbc.Col(html.H5(children='• 47% of road accidents occured in the temperature range of 41°F to 71°F'), className="mb-4")
         ]),
         dbc.Row([
             dbc.Col(dcc.Graph(figure=bar_temp), width=8),
