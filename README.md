@@ -3,7 +3,7 @@ Reducing traffic accidents is an essential public safety challenge all over the 
 
 ## Dataset Link 
 
-https://drive.google.com/file/d/1eKVS5Cgg6_uPxKtT3qFA7CIy8JrxQTir/view?usp=sharing
+https://drive.google.com/file/d/1SVL3cJCYPJXXjY5hyjFXJyU-Jms1Np3g/view?usp=sharing
 
 The dataset can also be downloaded from the kaggle link present in the homepage of the site. 
 
