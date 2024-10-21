@@ -15,7 +15,7 @@ The original dataset from kaggle is modified using the Dataset.ipynb file.
 
 2: Download the Dataset file from the link and copy it to the main folder.
 
-3: Download or clone the git repository 
+3: Download or clone the git repository from
 https://github.com/Sahilraut17/Car-Accident-Severity-Analysis.git
 
 4:  Open terminal/Cmd/anaconda and cd to the code folder.
